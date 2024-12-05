@@ -1,7 +1,8 @@
 // AWDZ Amplify Help Menu
 (function() {
-    // Inject CSS Styles
+    // Create a CSS style block for the menu
     const style = document.createElement("style");
+    style.type = "text/css";
     style.textContent = `
         .awdz-menu {
             position: fixed;
@@ -13,7 +14,6 @@
             border-radius: 10px;
             box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
             z-index: 10000;
-            font-family: Arial, sans-serif;
         }
         .awdz-menu h2 {
             margin: 0 0 10px 0;
@@ -30,20 +30,18 @@
             color: white;
             cursor: pointer;
         }
-        .awdz-menu .close-btn {
+        .awdz-menu .close-button {
             position: absolute;
             top: 5px;
             right: 10px;
             cursor: pointer;
-            color: white;
-            font-weight: bold;
         }
     `;
     document.head.appendChild(style);
 
-    // Create the menu
+    // Create the help menu
     const menu = document.createElement("div");
-    menu.classList.add("awdz-menu");
+    menu.className = "awdz-menu";
 
     // Title
     const title = document.createElement("h2");
@@ -55,7 +53,7 @@
     instructions.innerText = "Highlight text and click 'Get Help'!";
     menu.appendChild(instructions);
 
-    // Get Help Button
+    // Button
     const button = document.createElement("button");
     button.innerText = "Get Help";
     button.onclick = function() {
@@ -66,20 +64,29 @@
             return;
         }
 
-        // Helpers database
+        // Ask the user a question about the highlighted text
+        const userQuestion = prompt(`You highlighted:\n"${selectedText}"\n\nEnter your question about this text:`);
+        if (!userQuestion) {
+            alert("No question entered.");
+            return;
+        }
+
+        // Helper database
         const helpers = {
             "photosynthesis": "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",
             "gravity": "Gravity is the force that pulls objects toward the center of the Earth or other massive bodies.",
             "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat.",
-            "2+2": "The answer is four."
+            "2+2": "Four"
         };
 
-        const matchKey = Object.keys(helpers).find(key =>
-            selectedText.toLowerCase().includes(key.toLowerCase())
+        // Try to match a key from the helpers database
+        const match = Object.keys(helpers).find(key => 
+            selectedText.toLowerCase().includes(key.toLowerCase()) || 
+            userQuestion.toLowerCase().includes(key.toLowerCase())
         );
 
-        if (matchKey) {
-            alert(`Helper's Response:\n\n${helpers[matchKey]}`);
+        if (match) {
+            alert(`Helper's Response:\n\n${helpers[match]}`);
         } else {
             alert("No specific answer found. Try rephrasing your question!");
         }
@@ -89,12 +96,12 @@
     // Close Button
     const closeButton = document.createElement("span");
     closeButton.innerText = "✖";
-    closeButton.classList.add("close-btn");
+    closeButton.className = "close-button";
     closeButton.onclick = function() {
         document.body.removeChild(menu);
     };
     menu.appendChild(closeButton);
 
-    // Add the menu to the document
+    // Add the menu to the page
     document.body.appendChild(menu);
 })();
