@@ -50,17 +50,16 @@
             return;
         }
 
-        // Parse options into an object
+        // Parse options automatically using regex
+        var optionRegex = /([A-Z]):\s*([^,]+)/g;
         var options = {};
-        userOptions.split(",").forEach(option => {
-            var parts = option.split(":").map(part => part.trim());
-            if (parts.length === 2) {
-                options[parts[0].toUpperCase()] = parts[1];
-            }
-        });
+        var match;
+        while ((match = optionRegex.exec(userOptions)) !== null) {
+            options[match[1].toUpperCase()] = match[2].trim();
+        }
 
         if (Object.keys(options).length === 0) {
-            alert("Invalid options format. Please use A: Option 1, B: Option 2...");
+            alert("No valid options detected. Please ensure your input includes labels like A:, B:, C:...");
             return;
         }
 
@@ -72,10 +71,10 @@
         };
 
         // Try to match the selected text
-        var match = Object.keys(helpers).find(key => selectedText.toLowerCase().includes(key.toLowerCase()));
+        var matchKey = Object.keys(helpers).find(key => selectedText.toLowerCase().includes(key.toLowerCase()));
 
-        if (match) {
-            var helperResponse = helpers[match].toLowerCase();
+        if (matchKey) {
+            var helperResponse = helpers[matchKey].toLowerCase();
 
             // Check which option matches the helper response
             var bestOption = null;
