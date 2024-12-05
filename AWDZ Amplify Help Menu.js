@@ -1,88 +1,123 @@
 // AWDZ Amplify Help Menu
 (function() {
-    // Create a simple menu overlay
-    var menu = document.createElement("div");
-    menu.style.position = "fixed";
-    menu.style.top = "10px";
-    menu.style.right = "10px";
-    menu.style.padding = "20px";
-    menu.style.background = "rgba(0, 0, 0, 0.8)";
-    menu.style.color = "white";
-    menu.style.borderRadius = "10px";
-    menu.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.1)";
-    menu.style.zIndex = 10000;
+    // Inject CSS Styles
+    const style = document.createElement("style");
+    style.textContent = `
+        .awdz-menu {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            padding: 20px;
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            border-radius: 10px;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+            z-index: 10000;
+            font-family: Arial, sans-serif;
+        }
+        .awdz-menu h2 {
+            margin: 0 0 10px 0;
+            font-size: 18px;
+        }
+        .awdz-menu p {
+            margin: 0 0 15px 0;
+        }
+        .awdz-menu button {
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            background: blue;
+            color: white;
+            cursor: pointer;
+        }
+        .awdz-menu .close-btn {
+            position: absolute;
+            top: 5px;
+            right: 10px;
+            cursor: pointer;
+            color: white;
+            font-weight: bold;
+        }
+    `;
+    document.head.appendChild(style);
+
+    // Create the menu
+    const menu = document.createElement("div");
+    menu.classList.add("awdz-menu");
 
     // Title
-    var title = document.createElement("h2");
+    const title = document.createElement("h2");
     title.innerText = "AWDZ Amplify Help";
-    title.style.margin = "0 0 10px 0";
-    title.style.fontSize = "18px";
     menu.appendChild(title);
 
     // Instructions
-    var instructions = document.createElement("p");
+    const instructions = document.createElement("p");
     instructions.innerText = "Highlight text and click 'Get Help'!";
-    instructions.style.margin = "0 0 15px 0";
     menu.appendChild(instructions);
 
-    // Button
-    var button = document.createElement("button");
+    // Get Help Button
+    const button = document.createElement("button");
     button.innerText = "Get Help";
-    button.style.padding = "10px 15px";
-    button.style.border = "none";
-    button.style.borderRadius = "5px";
-    button.style.background = "blue";
-    button.style.color = "white";
-    button.style.cursor = "pointer";
-
     button.onclick = function() {
-        var selectedText = window.getSelection().toString().trim();
+        const selectedText = window.getSelection().toString().trim();
 
         if (!selectedText) {
             alert("Please highlight some text first!");
             return;
         }
 
-        // Ask the user for options (A, B, C, etc.)
-        var userOptions = prompt(`You highlighted:\n"${selectedText}"\n\nEnter the options (e.g., A: Option 1, B: Option 2, C: Option 3):`);
+        // Prompt the user for options (A: ..., B: ...)
+        const userOptions = prompt(
+            `You highlighted:\n"${selectedText}"\n\nEnter the options (e.g., A: Option 1, B: Option 2):`
+        );
         if (!userOptions) {
             alert("No options provided.");
             return;
         }
 
-        // Parse options automatically using regex
-        var optionRegex = /([A-Z]):\s*([^,]+)/g;
-        var options = {};
-        var match;
-        while ((match = optionRegex.exec(userOptions)) !== null) {
-            options[match[1].toUpperCase()] = match[2].trim();
+        // Parse options using regex
+        const optionRegex = /^([A-Z]):\s*(.+)$/i;
+        const options = {};
+        const lines = userOptions.split("\n");
+
+        for (const line of lines) {
+            const match = optionRegex.exec(line.trim());
+            if (match) {
+                const key = match[1].toUpperCase();
+                const value = match[2];
+
+                if (options[key]) {
+                    alert(`Duplicate option detected: ${key}. Please ensure each option is unique.`);
+                    return;
+                }
+
+                options[key] = value;
+            }
         }
 
         if (Object.keys(options).length === 0) {
-            alert("No valid options detected. Please ensure your input includes labels like A:, B:, C:...");
+            alert("No valid options detected. Please use the format A: Option 1, B: Option 2, etc.");
             return;
         }
 
         // Helpers database
-        var helpers = {
+        const helpers = {
             "photosynthesis": "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",
             "gravity": "Gravity is the force that pulls objects toward the center of the Earth or other massive bodies.",
             "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat."
         };
 
-        // Try to match the selected text
-        var matchKey = Object.keys(helpers).find(key => selectedText.toLowerCase().includes(key.toLowerCase()));
+        const matchKey = Object.keys(helpers).find(key =>
+            selectedText.toLowerCase().includes(key.toLowerCase())
+        );
 
         if (matchKey) {
-            var helperResponse = helpers[matchKey].toLowerCase();
+            const helperResponse = helpers[matchKey].toLowerCase();
 
-            // Check which option matches the helper response
-            var bestOption = null;
-            Object.keys(options).forEach(optionKey => {
-                if (helperResponse.includes(options[optionKey].toLowerCase())) {
-                    bestOption = optionKey;
-                }
-            });
+            // Match helper response to options
+            const bestOption = Object.keys(options).find(optionKey =>
+                helperResponse.includes(options[optionKey].toLowerCase())
+            );
 
             if (bestOption) {
                 alert(`The best match is:\n\n${bestOption}: ${options[bestOption]}`);
@@ -93,21 +128,17 @@
             alert("No specific answer found. Try rephrasing your question!");
         }
     };
-
     menu.appendChild(button);
 
     // Close Button
-    var closeButton = document.createElement("span");
+    const closeButton = document.createElement("span");
     closeButton.innerText = "✖";
-    closeButton.style.position = "absolute";
-    closeButton.style.top = "5px";
-    closeButton.style.right = "10px";
-    closeButton.style.cursor = "pointer";
+    closeButton.classList.add("close-btn");
     closeButton.onclick = function() {
         document.body.removeChild(menu);
     };
-
     menu.appendChild(closeButton);
 
+    // Add the menu to the document
     document.body.appendChild(menu);
 })();
