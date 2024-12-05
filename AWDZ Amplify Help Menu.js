@@ -73,7 +73,7 @@
                     "He should try not to let a deep feeling of longing get him down.",
                     "He should try not to let a deep feeling of sadness get him down."
                 ],
-                answer: 3 // Answer is the 3rd option
+                answer: 3 // Answer is the 3rd option (C)
             },
             "transfer": {
                 question: "Which option best describes the action of transfer?",
@@ -82,7 +82,7 @@
                     "To move something from one place to another.",
                     "To create something new."
                 ],
-                answer: 2 // Answer is the 2nd option
+                answer: 2 // Answer is the 2nd option (B)
             },
             "virtually": {
                 question: "What does 'virtually' mean in this context?",
@@ -91,7 +91,7 @@
                     "Almost but not completely.",
                     "Not at all."
                 ],
-                answer: 2 // Answer is the 2nd option
+                answer: 2 // Answer is the 2nd option (B)
             }
         };
 
@@ -106,14 +106,11 @@
                 response += `${String.fromCharCode(65 + index)}. ${option}\n`;
             });
 
-            // Ask the user to select an answer
-            const userAnswer = prompt(response + "\nEnter the letter of your choice (A, B, C, ...):");
+            // Displaying the correct answer with A, B, or C
+            const correctAnswer = String.fromCharCode(65 + helper.answer - 1); // A = 65, B = 66, C = 67...
+            response += `\nThe correct answer is: ${correctAnswer}`;
 
-            if (userAnswer && userAnswer.toUpperCase() === String.fromCharCode(65 + helper.answer - 1)) {
-                alert("Correct! Great job!");
-            } else {
-                alert("That's not correct. The correct answer is: " + helper.options[helper.answer - 1]);
-            }
+            alert(response);
         } else {
             alert("No specific question found for this word. Try rephrasing!");
         }
