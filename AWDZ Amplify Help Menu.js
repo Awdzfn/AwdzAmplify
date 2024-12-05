@@ -1,6 +1,6 @@
-// AWDZ Amplify Help Menu
+
 (function() {
-    // Create a CSS style block for the menu
+
     const style = document.createElement("style");
     style.type = "text/css";
     style.textContent = `
@@ -39,21 +39,21 @@
     `;
     document.head.appendChild(style);
 
-    // Create the help menu
+
     const menu = document.createElement("div");
     menu.className = "awdz-menu";
 
-    // Title
+  
     const title = document.createElement("h2");
     title.innerText = "AWDZ Amplify Help";
     menu.appendChild(title);
 
-    // Instructions
+   
     const instructions = document.createElement("p");
     instructions.innerText = "Highlight text and click 'Get Help'!";
     menu.appendChild(instructions);
 
-    // Button
+   
     const button = document.createElement("button");
     button.innerText = "Get Help";
     button.onclick = function() {
@@ -64,7 +64,7 @@
             return;
         }
 
-        // Helper database with questions and answers
+    
         const helpers = {
             "dejection": {
                 question: "Leo should try not to let dejection get him down. What does this mean?",
@@ -73,7 +73,7 @@
                     "He should try not to let a deep feeling of longing get him down.",
                     "He should try not to let a deep feeling of sadness get him down."
                 ],
-                answer: 3 // Answer is the 3rd option (C)
+                answer: 3 
             },
             "transfer": {
                 question: "Which option best describes the action of transfer?",
@@ -82,7 +82,7 @@
                     "To move something from one place to another.",
                     "To create something new."
                 ],
-                answer: 2 // Answer is the 2nd option (B)
+                answer: 2
             },
             "virtually": {
                 question: "What does 'virtually' mean in this context?",
@@ -91,7 +91,7 @@
                     "Almost but not completely.",
                     "Not at all."
                 ],
-                answer: 2 // Answer is the 2nd option (B)
+                answer: 2 
             }
         };
 
@@ -106,8 +106,8 @@
                 response += `${String.fromCharCode(65 + index)}. ${option}\n`;
             });
 
-            // Displaying the correct answer with A, B, or C
-            const correctAnswer = String.fromCharCode(65 + helper.answer - 1); // A = 65, B = 66, C = 67...
+            
+            const correctAnswer = String.fromCharCode(65 + helper.answer - 1); 
             response += `\nThe correct answer is: ${correctAnswer}`;
 
             alert(response);
@@ -126,6 +126,6 @@
     };
     menu.appendChild(closeButton);
 
-    // Add the menu to the page
+   
     document.body.appendChild(menu);
 })();
