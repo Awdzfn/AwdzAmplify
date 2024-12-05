@@ -105,6 +105,7 @@
             "photosynthesis": "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",
             "gravity": "Gravity is the force that pulls objects toward the center of the Earth or other massive bodies.",
             "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat."
+            "2+2": "The answer is four."
         };
 
         const matchKey = Object.keys(helpers).find(key =>
