@@ -43,24 +43,53 @@
             return;
         }
 
-        // Ask the user a question about the highlighted text
-        var userQuestion = prompt(`You highlighted:\n"${selectedText}"\n\nEnter your question about this text:`);
-        if (!userQuestion) {
-            alert("No question entered.");
+        // Ask the user for options (A, B, C, etc.)
+        var userOptions = prompt(`You highlighted:\n"${selectedText}"\n\nEnter the options (e.g., A: Option 1, B: Option 2, C: Option 3):`);
+        if (!userOptions) {
+            alert("No options provided.");
             return;
         }
 
-        // Process the text/question and display the result
+        // Parse options into an object
+        var options = {};
+        userOptions.split(",").forEach(option => {
+            var parts = option.split(":").map(part => part.trim());
+            if (parts.length === 2) {
+                options[parts[0].toUpperCase()] = parts[1];
+            }
+        });
+
+        if (Object.keys(options).length === 0) {
+            alert("Invalid options format. Please use A: Option 1, B: Option 2...");
+            return;
+        }
+
+        // Helpers database
         var helpers = {
             "photosynthesis": "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",
             "gravity": "Gravity is the force that pulls objects toward the center of the Earth or other massive bodies.",
             "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat."
         };
 
-        // Case-insensitive matching
+        // Try to match the selected text
         var match = Object.keys(helpers).find(key => selectedText.toLowerCase().includes(key.toLowerCase()));
+
         if (match) {
-            alert(`Helper's Response:\n\n${helpers[match]}`);
+            var helperResponse = helpers[match].toLowerCase();
+
+            // Check which option matches the helper response
+            var bestOption = null;
+            Object.keys(options).forEach(optionKey => {
+                if (helperResponse.includes(options[optionKey].toLowerCase())) {
+                    bestOption = optionKey;
+                }
+            });
+
+            if (bestOption) {
+                alert(`The best match is:\n\n${bestOption}: ${options[bestOption]}`);
+            } else {
+                alert("No matching option found. Try revising your options!");
+            }
         } else {
             alert("No specific answer found. Try rephrasing your question!");
         }
