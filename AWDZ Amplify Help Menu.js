@@ -57,7 +57,8 @@
             "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat."
         };
 
-        var match = Object.keys(helpers).find(key => selectedText.toLowerCase().includes(key));
+        // Case-insensitive matching
+        var match = Object.keys(helpers).find(key => selectedText.toLowerCase().includes(key.toLowerCase()));
         if (match) {
             alert(`Helper's Response:\n\n${helpers[match]}`);
         } else {
