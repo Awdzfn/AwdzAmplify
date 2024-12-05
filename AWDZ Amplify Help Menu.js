@@ -110,6 +110,15 @@
                     "Her character is an awful person."
                 ],
                 answer: 2 // Answer is the 2nd option (B)
+            },
+            "initial": {
+                question: "What does Tina mean when she says her initial reaction to the dish was not positive?",
+                options: [
+                    "Her first reaction to the dish was not positive.",
+                    "Her allergic reaction to the dish was not positive.",
+                    "Her overall reaction to the dish was not positive."
+                ],
+                answer: 1 // Answer is the 1st option (A)
             }
         };
 
