@@ -64,31 +64,58 @@
             return;
         }
 
-        // Ask the user a question about the highlighted text
-        const userQuestion = prompt(`You highlighted:\n"${selectedText}"\n\nEnter your question about this text:`);
-        if (!userQuestion) {
-            alert("No question entered.");
-            return;
-        }
-
-        // Helper database
+        // Helper database with questions and answers
         const helpers = {
-            "photosynthesis": "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",
-            "gravity": "Gravity is the force that pulls objects toward the center of the Earth or other massive bodies.",
-            "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat.",
-            "2+2": "Four"
+            "dejection": {
+                question: "Leo should try not to let dejection get him down. What does this mean?",
+                options: [
+                    "He should try not to let a deep feeling of shame get him down.",
+                    "He should try not to let a deep feeling of longing get him down.",
+                    "He should try not to let a deep feeling of sadness get him down."
+                ],
+                answer: 3 // Answer is the 3rd option
+            },
+            "transfer": {
+                question: "Which option best describes the action of transfer?",
+                options: [
+                    "To stay in one place.",
+                    "To move something from one place to another.",
+                    "To create something new."
+                ],
+                answer: 2 // Answer is the 2nd option
+            },
+            "virtually": {
+                question: "What does 'virtually' mean in this context?",
+                options: [
+                    "Completely or entirely.",
+                    "Almost but not completely.",
+                    "Not at all."
+                ],
+                answer: 2 // Answer is the 2nd option
+            }
         };
 
-        // Try to match a key from the helpers database
-        const match = Object.keys(helpers).find(key => 
-            selectedText.toLowerCase().includes(key.toLowerCase()) || 
-            userQuestion.toLowerCase().includes(key.toLowerCase())
+        const match = Object.keys(helpers).find(key =>
+            selectedText.toLowerCase().includes(key.toLowerCase())
         );
 
         if (match) {
-            alert(`Helper's Response:\n\n${helpers[match]}`);
+            const helper = helpers[match];
+            let response = `${helper.question}\n\n`;
+            helper.options.forEach((option, index) => {
+                response += `${String.fromCharCode(65 + index)}. ${option}\n`;
+            });
+
+            // Ask the user to select an answer
+            const userAnswer = prompt(response + "\nEnter the letter of your choice (A, B, C, ...):");
+
+            if (userAnswer && userAnswer.toUpperCase() === String.fromCharCode(65 + helper.answer - 1)) {
+                alert("Correct! Great job!");
+            } else {
+                alert("That's not correct. The correct answer is: " + helper.options[helper.answer - 1]);
+            }
         } else {
-            alert("No specific answer found. Try rephrasing your question!");
+            alert("No specific question found for this word. Try rephrasing!");
         }
     };
     menu.appendChild(button);
