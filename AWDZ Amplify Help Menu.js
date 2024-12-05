@@ -66,45 +66,11 @@
             return;
         }
 
-        // Prompt the user for options (A: ..., B: ...)
-        const userOptions = prompt(
-            `You highlighted:\n"${selectedText}"\n\nEnter the options (e.g., A: Option 1, B: Option 2):`
-        );
-        if (!userOptions) {
-            alert("No options provided.");
-            return;
-        }
-
-        // Parse options using regex
-        const optionRegex = /^([A-Z]):\s*(.+)$/i;
-        const options = {};
-        const lines = userOptions.split("\n");
-
-        for (const line of lines) {
-            const match = optionRegex.exec(line.trim());
-            if (match) {
-                const key = match[1].toUpperCase();
-                const value = match[2];
-
-                if (options[key]) {
-                    alert(`Duplicate option detected: ${key}. Please ensure each option is unique.`);
-                    return;
-                }
-
-                options[key] = value;
-            }
-        }
-
-        if (Object.keys(options).length === 0) {
-            alert("No valid options detected. Please use the format A: Option 1, B: Option 2, etc.");
-            return;
-        }
-
         // Helpers database
         const helpers = {
             "photosynthesis": "Photosynthesis is the process by which plants use sunlight, water, and carbon dioxide to produce oxygen and energy in the form of glucose.",
             "gravity": "Gravity is the force that pulls objects toward the center of the Earth or other massive bodies.",
-            "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat."
+            "evaporation": "Evaporation is the process where liquid water turns into vapor due to heat.",
             "2+2": "The answer is four."
         };
 
@@ -113,18 +79,7 @@
         );
 
         if (matchKey) {
-            const helperResponse = helpers[matchKey].toLowerCase();
-
-            // Match helper response to options
-            const bestOption = Object.keys(options).find(optionKey =>
-                helperResponse.includes(options[optionKey].toLowerCase())
-            );
-
-            if (bestOption) {
-                alert(`The best match is:\n\n${bestOption}: ${options[bestOption]}`);
-            } else {
-                alert("No matching option found. Try revising your options!");
-            }
+            alert(`Helper's Response:\n\n${helpers[matchKey]}`);
         } else {
             alert("No specific answer found. Try rephrasing your question!");
         }
